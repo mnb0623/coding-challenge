@@ -11,8 +11,14 @@ import {
 import { useMemo } from 'react';
 
 export const Simulation = () => {
-  const { formData, errors, handleChange, handleSubmit, isSubmitting } =
-    useSimulationForm();
+  const {
+    formData,
+    errors,
+    handleChange,
+    handleSubmit,
+    isFormValid,
+    isSubmitting,
+  } = useSimulationForm();
 
   // useMemoを使って、formDataの変更に応じて選択肢リストを再計算
   const companyOptions = useMemo(
@@ -67,19 +73,7 @@ export const Simulation = () => {
           <Button
             hasArrow
             isSubmitting={isSubmitting}
-            disabled={
-              !formData.postalCode ||
-              !formData.powerCompany ||
-              !formData.servicePlan ||
-              !formData.contractCapacity ||
-              !formData.lastMonthAmount ||
-              !!errors.postalCode ||
-              !!errors.powerCompany ||
-              !!errors.servicePlan ||
-              !!errors.contractCapacity ||
-              !!errors.lastMonthAmount ||
-              isSubmitting
-            }
+            disabled={!isFormValid || isSubmitting}
             onClick={handleSubmit}
           >
             結果を見る

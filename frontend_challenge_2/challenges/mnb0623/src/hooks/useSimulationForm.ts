@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { type PlanKey, type CompanyKey } from '../constants/powerDataConfig';
 
 type SimulationFormData = {
@@ -132,6 +132,31 @@ export const useSimulationForm = () => {
     }));
   };
 
+  const isFormValid = useMemo(() => {
+    if (
+      !formData.postalCode ||
+      !formData.powerCompany ||
+      !formData.servicePlan ||
+      !formData.lastMonthAmount
+    ) {
+      return false;
+    }
+
+    // 関西電力従量電灯Aの場合は、契約容量を聴取しない = その他の条件では契約容量が必須
+    const isCapacityNotRequired =
+      formData.powerCompany === 'kansai' && formData.servicePlan === 'meteredPlanA';
+    if (!formData.contractCapacity && !isCapacityNotRequired) {
+      return false;
+    }
+
+    if (Object.values(errors).some((error) => !!error)) {
+      return false;
+    }
+
+    // 全てのチェックをクリアした場合のみtrueを返す
+    return true;
+  }, [formData, errors]);
+
   const handleSubmit = async () => {
     try {
       // 送信処理 擬似的に1秒待機
@@ -151,6 +176,7 @@ export const useSimulationForm = () => {
     formData,
     errors,
     handleChange,
+    isFormValid,
     handleSubmit,
     isSubmitting,
   };
