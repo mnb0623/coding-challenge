@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { type PlanKey, type CompanyKey } from '../constants/powerDataConfig';
+import { VALIDATION_MESSAGES } from '../constants/validationMessage';
 
 type SimulationFormData = {
   postalCode: string;
@@ -33,11 +34,11 @@ const validatePostalCode = (value: string): string | null => {
     return null;
   }
   if (!/^\d+$/.test(value)) {
-    return '半角数字のみで入力してください。';
+    return VALIDATION_MESSAGES.POSTAL_CODE.NUMBERS_ONLY;
   }
   const firstDigit = value.charAt(0);
   if (firstDigit !== '1' && firstDigit !== '5') {
-    return 'サービスエリア対象外です。';
+    return VALIDATION_MESSAGES.POSTAL_CODE.OUT_OF_SERVICE_AREA;
   }
 
   return null;
@@ -55,7 +56,7 @@ const determineAreaFromPostalCode = (value: string): CompanyKey => {
 // 電力会社の選択肢を検証する関数
 const validatePowerCompany = (value: string): string | null => {
   if (value === 'other') {
-    return 'シミュレーション対象外です。';
+    return VALIDATION_MESSAGES.POWER_COMPANY.NOT_SUPPORTED;
   }
   return null;
 };
@@ -65,20 +66,19 @@ const validateAmount = (value: string): string | null => {
     return null;
   }
   if (!/^\d+$/.test(value)) {
-    return '半角数字のみで入力してください。';
+    return VALIDATION_MESSAGES.AMOUNT.NUMBERS_ONLY;
   }
   const amount = parseInt(value, 10);
   if (isNaN(amount) || amount < 1000) {
-    return '電気代を正しく入力してください。';
+    return VALIDATION_MESSAGES.AMOUNT.MINIMUM_AMOUNT;
   }
   return null;
 };
 
 const validateMailAddress = (value: string): string | null => {
-  // emailPattern.test(value)は、メールアドレスの形式が正しいかどうかをチェック
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailPattern.test(value)) {
-    return 'メールアドレスを正しく入力してください。';
+    return VALIDATION_MESSAGES.MAIL_ADDRESS.INVALID_FORMAT;
   }
   return null;
 }
