@@ -33,8 +33,8 @@ export const getServicePlanOptions = (
 };
 
 export const getContractCapacityOptions = (
-  powerCompanyValue: string,
-  servicePlanValue: PlanKey<CompanyKey> | ''
+  powerCompanyValue: CompanyKey | '',
+  servicePlanValue: string
 ): SelectOption[] => {
   if (
     !powerCompanyValue ||
@@ -43,8 +43,13 @@ export const getContractCapacityOptions = (
   ) {
     return [];
   }
-  const company = powerDataConfig[powerCompanyValue as CompanyKey];
-  const plan = company?.plans[servicePlanValue];
+  const company = powerDataConfig[powerCompanyValue];
+  const plan =
+    company?.plans[servicePlanValue as PlanKey<typeof powerCompanyValue>];
+  const capacities = plan?.capacities || [];
 
-  return plan?.capacities || [];
+  return capacities.map((capacity) => ({
+    value: capacity.value,
+    label: capacity.label,
+  }));
 };

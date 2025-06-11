@@ -81,7 +81,7 @@ const validateMailAddress = (value: string): string | null => {
     return VALIDATION_MESSAGES.MAIL_ADDRESS.INVALID_FORMAT;
   }
   return null;
-}
+};
 
 export const useSimulationForm = () => {
   const [formData, setFormData] = useState<SimulationFormData>({
@@ -140,7 +140,7 @@ export const useSimulationForm = () => {
       error = validateAmount(value);
     }
     if (field === 'mailAddress') {
-      error =  validateMailAddress(value);
+      error = validateMailAddress(value);
     }
     setErrors((prev) => ({
       ...prev,
@@ -153,14 +153,16 @@ export const useSimulationForm = () => {
       !formData.postalCode ||
       !formData.powerCompany ||
       !formData.servicePlan ||
-      !formData.lastMonthAmount
+      !formData.lastMonthAmount ||
+      !formData.mailAddress
     ) {
       return false;
     }
 
     // 関西電力従量電灯Aの場合は、契約容量を聴取しない = その他の条件では契約容量が必須
     const isCapacityNotRequired =
-      formData.powerCompany === 'kansai' && formData.servicePlan === 'meteredPlanA';
+      formData.powerCompany === 'kansai' &&
+      formData.servicePlan === 'meteredPlanA';
     if (!formData.contractCapacity && !isCapacityNotRequired) {
       return false;
     }

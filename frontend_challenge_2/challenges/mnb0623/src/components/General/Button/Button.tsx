@@ -22,7 +22,7 @@ const Button: React.FC<Props> = ({
     isSubmitting ? styles.isSubmitting : '',
     className,
   ]
-    .filter(Boolean) 
+    .filter(Boolean)
     .join(' ');
 
   return (

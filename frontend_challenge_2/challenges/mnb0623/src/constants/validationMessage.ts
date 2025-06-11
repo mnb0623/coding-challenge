@@ -13,4 +13,4 @@ export const VALIDATION_MESSAGES = {
   MAIL_ADDRESS: {
     INVALID_FORMAT: 'メールアドレスを正しく入力してください。',
   },
-} as const; 
+} as const;
