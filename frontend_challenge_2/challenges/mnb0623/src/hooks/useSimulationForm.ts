@@ -66,7 +66,7 @@ const validateAmount = (value: string): string | null => {
   }
   const amount = parseInt(value, 10);
   if (isNaN(amount) || amount < 1000) {
-    return '金額は1000円以上でなければなりません。';
+    return '電気代を正しく入力してください。';
   }
   return null;
 };
