@@ -9,6 +9,7 @@ import {
   getContractCapacityOptions,
 } from '../utils/formOptions';
 import { useMemo } from 'react';
+import { MailForm } from '../components/forms/MailForm';
 
 export const Simulation = () => {
   const {
@@ -57,18 +58,16 @@ export const Simulation = () => {
           onFieldChange={handleChange}
           area={formData.area}
         />
-
         <AmountForm
           value={formData.lastMonthAmount}
           error={errors.lastMonthAmount}
           onChange={(value) => handleChange('lastMonthAmount', value)}
         />
-
-        {/* <div>
-          <p>送信先のメールアドレスを教えてください
-            必須 メールアドレス
-          </p>
-        </div> */}
+        <MailForm
+          value={formData.mailAddress}
+          error={errors.mailAddress}
+          onChange={(value) => handleChange('mailAddress', value)}
+        />
         <div className="mt-8 px-4">
           <Button
             hasArrow

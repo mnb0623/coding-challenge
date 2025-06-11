@@ -8,6 +8,7 @@ type SimulationFormData = {
   servicePlan: PlanKey<CompanyKey> | '';
   contractCapacity: string;
   lastMonthAmount: string;
+  mailAddress: string;
 };
 
 type FormField =
@@ -15,7 +16,8 @@ type FormField =
   | 'powerCompany'
   | 'servicePlan'
   | 'contractCapacity'
-  | 'lastMonthAmount';
+  | 'lastMonthAmount'
+  | 'mailAddress';
 
 type FormErrors = {
   postalCode?: string;
@@ -23,6 +25,7 @@ type FormErrors = {
   servicePlan?: string;
   contractCapacity?: string;
   lastMonthAmount?: string;
+  mailAddress?: string;
 };
 
 const validatePostalCode = (value: string): string | null => {
@@ -71,6 +74,15 @@ const validateAmount = (value: string): string | null => {
   return null;
 };
 
+const validateMailAddress = (value: string): string | null => {
+  // emailPattern.test(value)は、メールアドレスの形式が正しいかどうかをチェック
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailPattern.test(value)) {
+    return 'メールアドレスを正しく入力してください。';
+  }
+  return null;
+}
+
 export const useSimulationForm = () => {
   const [formData, setFormData] = useState<SimulationFormData>({
     postalCode: '',
@@ -79,6 +91,7 @@ export const useSimulationForm = () => {
     servicePlan: '',
     contractCapacity: '',
     lastMonthAmount: '',
+    mailAddress: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -125,6 +138,9 @@ export const useSimulationForm = () => {
     }
     if (field === 'lastMonthAmount') {
       error = validateAmount(value);
+    }
+    if (field === 'mailAddress') {
+      error =  validateMailAddress(value);
     }
     setErrors((prev) => ({
       ...prev,
