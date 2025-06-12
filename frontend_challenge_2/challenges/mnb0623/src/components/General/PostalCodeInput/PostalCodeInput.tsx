@@ -6,6 +6,7 @@ type Props = {
   onChange: (value: string) => void;
   disabled?: boolean;
   error?: string;
+  placeholder?: string;
 };
 
 const PostalCodeInput: React.FC<Props> = ({
@@ -13,9 +14,15 @@ const PostalCodeInput: React.FC<Props> = ({
   onChange,
   disabled,
   error,
+  placeholder = '1234567',
 }) => {
   const firstInputRef = useRef<HTMLInputElement>(null);
   const secondInputRef = useRef<HTMLInputElement>(null);
+  // 7桁でない場合はデフォルト値にする
+  const safePlaceholder =
+    placeholder && placeholder.length === 7 ? placeholder : '1234567';
+  const firstPlaceholder = safePlaceholder.slice(0, 3);
+  const secondPlaceholder = safePlaceholder.slice(3, 7);
 
   // valueを3桁と4桁に分割して各inputに表示
   const firstPart = value.slice(0, 3);
@@ -64,6 +71,7 @@ const PostalCodeInput: React.FC<Props> = ({
         onChange={handleFirstChange}
         disabled={disabled}
         className={combinedClassName}
+        placeholder={firstPlaceholder}
       />
       <span className={styles.hyphen}>-</span>
       <input
@@ -75,6 +83,7 @@ const PostalCodeInput: React.FC<Props> = ({
         onKeyDown={handleSecondKeyDown}
         disabled={disabled}
         className={combinedClassName}
+        placeholder={secondPlaceholder}
       />
     </div>
   );
