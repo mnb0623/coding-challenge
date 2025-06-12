@@ -104,44 +104,53 @@ export const useSimulationForm = () => {
 
     let error: string | null = null;
 
-    if (field === 'postalCode') {
-      const postalCodeError = validatePostalCode(value);
-      error = postalCodeError ?? null;
+    switch (field) {
+      case 'postalCode': {
+        const postalCodeError = validatePostalCode(value);
+        error = postalCodeError ?? null;
 
-      const newArea = determineAreaFromPostalCode(value);
-      setFormData((prev) => ({
-        ...prev,
-        area: newArea,
-        powerCompany: '',
-        servicePlan: '',
-        contractCapacity: '',
-      }));
+        const newArea = determineAreaFromPostalCode(value);
+        setFormData((prev) => ({
+          ...prev,
+          area: newArea,
+          powerCompany: '',
+          servicePlan: '',
+          contractCapacity: '',
+        }));
+        break;
+      }
+      case 'powerCompany': {
+        error = validatePowerCompany(value);
+        // 電力会社が選択された場合、サービスプランと契約容量をリセット
+        setFormData((prev) => ({
+          ...prev,
+          servicePlan: '',
+          contractCapacity: '',
+        }));
+        break;
+      }
+      case 'servicePlan': {
+        // サービスプランが選択された場合、契約容量をリセット
+        setFormData((prev) => ({
+          ...prev,
+          contractCapacity: '',
+        }));
+        break;
+      }
+      case 'contractCapacity': {
+        error = null;
+        break;
+      }
+      case 'lastMonthAmount': {
+        error = validateAmount(value);
+        break;
+      }
+      case 'mailAddress': {
+        error = validateMailAddress(value);
+        break;
+      }
     }
-    if (field === 'powerCompany') {
-      error = validatePowerCompany(value);
-      // 電力会社が選択された場合、サービスプランと契約容量をリセット
-      setFormData((prev) => ({
-        ...prev,
-        servicePlan: '',
-        contractCapacity: '',
-      }));
-    }
-    if (field === 'servicePlan') {
-      // サービスプランが選択された場合、契約容量をリセット
-      setFormData((prev) => ({
-        ...prev,
-        contractCapacity: '',
-      }));
-    }
-    if (field === 'contractCapacity') {
-      error = null;
-    }
-    if (field === 'lastMonthAmount') {
-      error = validateAmount(value);
-    }
-    if (field === 'mailAddress') {
-      error = validateMailAddress(value);
-    }
+
     setErrors((prev) => ({
       ...prev,
       [field]: error ?? undefined,
