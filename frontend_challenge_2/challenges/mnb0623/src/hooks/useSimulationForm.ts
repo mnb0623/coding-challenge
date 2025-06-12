@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { type PlanKey, type CompanyKey } from '../constants/powerDataConfig';
 import { VALIDATION_MESSAGES } from '../constants/validationMessage';
-import { isNumeric } from '../utils/validationRules';
+import { isNumeric, isEmailPattern } from '../utils/validationRules';
 
 type SimulationFormData = {
   postalCode: string;
@@ -77,8 +77,7 @@ const validateAmount = (value: string): string | null => {
 };
 
 const validateMailAddress = (value: string): string | null => {
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailPattern.test(value)) {
+  if (!isEmailPattern(value)) {
     return VALIDATION_MESSAGES.MAIL_ADDRESS.INVALID_FORMAT;
   }
   return null;
