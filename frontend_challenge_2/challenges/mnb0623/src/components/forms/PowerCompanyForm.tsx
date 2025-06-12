@@ -39,7 +39,7 @@ const PlanDescription = ({
     ];
 
   return (
-    <div className="bg-main-gray p-4 rounded mt-2 text-sm">
+    <div className="bg-main-gray px-3 py-0.5 rounded-b border-t border-dotted text-xs">
       <p>{plan.description}</p>
     </div>
   );
