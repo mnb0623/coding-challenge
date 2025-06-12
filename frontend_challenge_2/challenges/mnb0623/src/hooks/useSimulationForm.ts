@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { type PlanKey, type CompanyKey } from '../constants/powerDataConfig';
 import { VALIDATION_MESSAGES } from '../constants/validationMessage';
+import { isNumeric } from '../utils/validationRules';
 
 type SimulationFormData = {
   postalCode: string;
@@ -33,7 +34,7 @@ const validatePostalCode = (value: string): string | null => {
   if (!value) {
     return null;
   }
-  if (!/^\d+$/.test(value)) {
+  if (!isNumeric(value)) {
     return VALIDATION_MESSAGES.POSTAL_CODE.NUMBERS_ONLY;
   }
   const firstDigit = value.charAt(0);
@@ -65,7 +66,7 @@ const validateAmount = (value: string): string | null => {
   if (!value) {
     return null;
   }
-  if (!/^\d+$/.test(value)) {
+  if (isNumeric(value)) {
     return VALIDATION_MESSAGES.AMOUNT.NUMBERS_ONLY;
   }
   const amount = parseInt(value, 10);
