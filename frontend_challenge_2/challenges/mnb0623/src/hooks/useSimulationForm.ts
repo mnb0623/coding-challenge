@@ -66,7 +66,7 @@ const validateAmount = (value: string): string | null => {
   if (!value) {
     return null;
   }
-  if (isNumeric(value)) {
+  if (!isNumeric(value)) {
     return VALIDATION_MESSAGES.AMOUNT.NUMBERS_ONLY;
   }
   const amount = parseInt(value, 10);
